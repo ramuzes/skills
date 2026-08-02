@@ -1,0 +1,22 @@
+{
+  "name": "ramuz-skills",
+  "version": "0.1.0",
+  "description": "Curated Claude skills for the Perseo quant stack — drawn from superpowers + mattpocock-skills.",
+  "skills": [
+    "./skills/dev-loop",
+    "./skills/test-driven-development",
+    "./skills/systematic-debugging",
+    "./skills/writing-plans",
+    "./skills/subagent-driven-development",
+    "./skills/using-git-worktrees",
+    "./skills/verification-before-completion",
+    "./skills/finishing-a-development-branch",
+    "./skills/research",
+    "./skills/grill-with-docs",
+    "./skills/to-spec",
+    "./skills/to-tickets",
+    "./skills/implement",
+    "./skills/domain-modeling",
+    "./skills/wayfinder"
+  ]
+}
