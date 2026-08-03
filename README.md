@@ -41,7 +41,7 @@ Install at **user scope** so it follows you across repos. Then uninstall the ups
 
 `research → grill-with-docs → to-spec → to-tickets → using-git-worktrees + subagent-driven-development (TDD inside) → verification-before-completion → /code-review → finishing-a-development-branch → (delete plan scratch, write ADR, close milestone)`.
 
-See `plugins/ramuz-skills/skills/dev-loop/SKILL.md`.
+See `skills/dev-loop/SKILL.md`.
 
 ## Maintain
 

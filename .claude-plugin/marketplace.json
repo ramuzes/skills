@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "ramuz-skills",
-      "source": "./plugins/ramuz-skills",
+      "source": "./",
       "description": "Curated Claude skills for the Perseo quant stack — drawn from superpowers + mattpocock-skills."
     }
   ]
