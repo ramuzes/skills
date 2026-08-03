@@ -1,0 +1,13 @@
+{
+  "name": "ramuz-skills",
+  "owner": {
+    "name": "Ramuz"
+  },
+  "plugins": [
+    {
+      "name": "ramuz-skills",
+      "source": "./plugins/ramuz-skills",
+      "description": "Curated Claude skills for the Perseo quant stack — drawn from superpowers + mattpocock-skills."
+    }
+  ]
+}
