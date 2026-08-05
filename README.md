@@ -24,11 +24,25 @@ Copied and lightly curated from:
 
 ## Install
 
+### Claude Code
+
 ```
 /plugin marketplace add /home/ramuz/quant/claude-skills   # or your git remote
 /plugin install ramuz-skills
 /reload-plugins
 ```
+
+### Kimi Code
+
+```
+/plugins marketplace add /home/ramuz/quant/claude-skills   # or your git remote
+/plugins install ramuz-skills
+/new
+```
+
+Kimi Code reads plugin metadata from `.kimi-plugin/plugin.json` and skill definitions from `skills/`. Start a fresh session with `/new` after install or update.
+
+### Both
 
 Install at **user scope** so it follows you across repos. Then uninstall the upstream plugins to avoid duplicate matchers:
 

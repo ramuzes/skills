@@ -17,6 +17,8 @@
     "./skills/to-tickets",
     "./skills/implement",
     "./skills/domain-modeling",
-    "./skills/wayfinder"
+    "./skills/wayfinder",
+    "./skills/requesting-code-review",
+    "./skills/receiving-code-review"
   ]
 }

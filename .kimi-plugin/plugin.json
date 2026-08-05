@@ -1,0 +1,30 @@
+{
+  "name": "ramuz-skills",
+  "version": "0.1.0",
+  "description": "Curated Claude skills for the Perseo quant stack — drawn from superpowers + mattpocock-skills.",
+  "author": {
+    "name": "Ramuz"
+  },
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "quant",
+    "tdd",
+    "debugging",
+    "planning",
+    "workflow",
+    "development-loop"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ramuz Skills",
+    "shortDescription": "Curated development skills for the Perseo quant stack",
+    "longDescription": "Personal, curated skills for work on the Perseo quant trading stack. Covers research, spec/ticket flows, TDD, systematic debugging, planning, subagent-driven development, domain modeling, and a canonical dev-loop that routes to the right skill at each phase.",
+    "developerName": "Ramuz",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ]
+  }
+}
