@@ -3,6 +3,8 @@ name: subagent-driven-development
 description: Use when executing implementation plans with independent tasks in the current session
 ---
 
+<!-- sourced from superpowers (github.com/obra/superpowers); re-sync if an upstream update suits -->
+
 # Subagent-Driven Development
 
 Execute plan by dispatching a fresh implementer subagent per task, a task review (spec compliance + code quality) after each, and a broad whole-branch review at the end.
@@ -59,14 +61,14 @@ digraph process {
         "Append completion to ledger, mark todo complete" [shape=box];
     }
 
-    "Setup: worktree, ledger check, read plan, pre-flight review" [shape=box];
+    "Setup: feature branch, ledger check, read plan, pre-flight review" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" [shape=box];
     "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" [shape=box];
     "Final review clean: delete this plan's workspace" [shape=box];
     "Use finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
-    "Setup: worktree, ledger check, read plan, pre-flight review" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Setup: feature branch, ledger check, read plan, pre-flight review" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer asks questions?";
     "Implementer asks questions?" -> "Answer questions, provide context" [label="yes"];
     "Answer questions, provide context" -> "Implementer implements, tests, commits, self-reviews";
@@ -99,10 +101,10 @@ digraph process {
 
 ## Setup
 
-Ensure the work happens in an isolated workspace: use
-using-git-worktrees to create one or verify the existing one.
-Never start implementation on a main/master branch without your human
-partner's explicit consent.
+Work on a dedicated feature branch for this plan — every task commits
+there. Use a git worktree only if your human partner explicitly asks for
+one (location `.worktrees/`, gitignored). Never start implementation on
+main/master without your human partner's explicit consent.
 
 Conversation memory does not survive compaction. In real sessions,
 controllers that lost their place have re-dispatched entire completed task
@@ -111,7 +113,7 @@ a ledger file, not only in todos.
 
 - Each plan owns a workspace: at skill start, run this skill's
   `scripts/sdd-workspace PLAN_FILE` — it prints the plan's git-ignored
-  directory (`<repo-root>/.superpowers/sdd/<plan-basename>/`), home to
+  directory (`<repo-root>/.scratch/sdd/<plan-basename>/`), home to
   every artifact for THIS plan: ledger, briefs, reports, review packages.
   Another plan's directory is never yours to read or write.
 - Check for this plan's ledger at `<workspace>/progress.md`. If its first
@@ -119,7 +121,7 @@ a ledger file, not only in todos.
   — do not re-dispatch them; resume at the first task without one. A task
   whose last line is a fix round is mid-loop: resume the loop at the next
   round. A ledger whose first line names a different plan file — or a stray
-  ledger at the old flat path `.superpowers/sdd/progress.md` — is another
+  ledger at the old flat path `.scratch/sdd/progress.md` — is another
   plan's progress: leave it in place and start your own, fresh.
 - Create the ledger with its identity as the first line:
   `# SDD ledger — plan: <plan file path>`.
@@ -388,8 +390,10 @@ one file instead of re-deriving the branch diff with git commands. Dispatch
 on the most capable available model (see Model Selection), using
 requesting-code-review's
 [code-reviewer.md](../requesting-code-review/code-reviewer.md). Point it at
-the ledger's deferred-minor and parked lines so it can triage which must be
-fixed before merge.
+the plan and SPEC, plus the ledger's deferred-minor and parked lines. The
+final review checks **spec compliance** — was every requirement in the
+SPEC/PLAN implemented correctly? — not code style; code quality was gated
+at each per-task review.
 
 If the final whole-branch review returns findings, dispatch ONE fix subagent
 with the complete findings list — not one fixer per finding.
@@ -430,9 +434,9 @@ Use finishing-a-development-branch.
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Setup: worktree verified]
-[Read plan file once: docs/superpowers/plans/feature-plan.md]
-[Resolve workspace: scripts/sdd-workspace docs/superpowers/plans/feature-plan.md — no ledger inside, fresh start]
+[Setup: feature branch verified]
+[Read plan file once: docs/plan/feature-plan.md]
+[Resolve workspace: scripts/sdd-workspace docs/plan/feature-plan.md — no ledger inside, fresh start]
 [Create todos for all tasks]
 
 Task 1: Hook installation script
@@ -441,7 +445,7 @@ Task 1: Hook installation script
 
 Implementer: "Before I begin - should the hook be installed at user or system level?"
 
-You: "User level (~/.config/superpowers/hooks/)"
+You: "User level (~/.config/claude/hooks/)"
 
 Implementer: [Later]
   - Implemented install-hook command

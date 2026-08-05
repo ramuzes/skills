@@ -3,11 +3,13 @@ name: requesting-code-review
 description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements
 ---
 
+<!-- sourced from superpowers (github.com/obra/superpowers); re-sync if an upstream update suits -->
+
 # Requesting Code Review
 
 Dispatch a code reviewer subagent to catch issues before they cascade. The reviewer gets precisely crafted context for evaluation — never your session's history.
 
-**Core principle:** Review early, review often.
+**Core principle:** Review early, review often. The review checks **spec compliance** — was the SPEC/PLAN implemented correctly? — not code style (that was gated per task).
 
 ## When to Request Review
 
@@ -57,7 +59,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 [Dispatch code reviewer subagent]
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/superpowers/plans/deployment-plan.md
+  PLAN_OR_REQUIREMENTS: Task 2 from docs/plan/deployment-plan.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 

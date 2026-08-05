@@ -2,7 +2,7 @@
 
 Use this template when dispatching a code reviewer subagent.
 
-**Purpose:** Review completed work against requirements and code quality standards before it cascades into more work.
+**Purpose:** Review completed work for **spec compliance** — did the implementation deliver everything the SPEC/PLAN required? Code quality was gated at each per-task review; this final review is about correctness against the spec, not style.
 
 ```
 Subagent (general-purpose):
@@ -36,35 +36,18 @@ Subagent (general-purpose):
 
     ## What to Check
 
-    **Plan alignment:**
-    - Does the implementation match the plan / requirements?
-    - Are deviations justified improvements, or problematic departures?
-    - Is all planned functionality present?
+    **Spec compliance (the primary lens — this is a final review, not a style pass):**
+    - Is every requirement, user story, and acceptance criterion from the SPEC actually implemented?
+    - Does the observed behavior match what the SPEC describes — including its design/implementation decisions?
+    - Are any spec items silently dropped, stubbed, or only partially done?
+    - Are deviations from the SPEC justified improvements, or spec gaps that must be fixed before merge?
 
-    **Code quality:**
-    - Clean separation of concerns?
-    - Proper error handling?
-    - Type safety where applicable?
-    - DRY without premature abstraction?
-    - Edge cases handled?
+    **Correctness signals (only flag what violates the spec):**
+    - Tests verify the spec'd behavior (not mocks of it) and pass
+    - No bugs that break spec'd behavior
+    - Migrations / backward-compat handled where the SPEC requires them
 
-    **Architecture:**
-    - Sound design decisions?
-    - Reasonable scalability and performance?
-    - Security concerns?
-    - Integrates cleanly with surrounding code?
-
-    **Testing:**
-    - Tests verify real behavior, not mocks?
-    - Edge cases covered?
-    - Integration tests where they matter?
-    - All tests passing?
-
-    **Production readiness:**
-    - Migration strategy if schema changed?
-    - Backward compatibility considered?
-    - Documentation complete?
-    - No obvious bugs?
+    Code style, architecture taste, and DRY were gated at each per-task review — do not relitigate them here unless they cause a spec failure.
 
     ## Calibration
 

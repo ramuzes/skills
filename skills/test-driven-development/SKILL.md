@@ -3,6 +3,8 @@ name: test-driven-development
 description: Use when implementing any feature or bugfix, before writing implementation code
 ---
 
+<!-- sourced from superpowers (github.com/obra/superpowers); re-sync if an upstream update suits -->
+
 # Test-Driven Development (TDD)
 
 ## Overview

@@ -3,6 +3,8 @@ name: finishing-a-development-branch
 description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work
 ---
 
+<!-- sourced from superpowers (github.com/obra/superpowers); re-sync if an upstream update suits -->
+
 # Finishing a Development Branch
 
 ## Overview

@@ -1,7 +1,9 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
+description: Use ONLY when the user explicitly asks for a git worktree for isolation. Default isolation is a plain feature branch — do not proactively offer a worktree. Ensures an isolated workspace via native tools or git worktree fallback under .worktrees/.
 ---
+
+<!-- sourced from superpowers (github.com/obra/superpowers); re-sync if an upstream update suits -->
 
 # Using Git Worktrees
 
@@ -38,11 +40,7 @@ Report with branch state:
 
 **If `GIT_DIR == GIT_COMMON` (or in a submodule):** You are in a normal repo checkout.
 
-Has the user already indicated their worktree preference in your instructions? If not, ask for consent before creating a worktree:
-
-> "Would you like me to set up an isolated worktree? It protects your current branch from changes."
-
-Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 2.
+This skill is **opt-in** — only create a worktree when the user has explicitly asked for one. Do not proactively offer. If the user has not asked for a worktree, work in place on a feature branch and skip to Step 2.
 
 ## Step 1: Create Isolated Workspace
 

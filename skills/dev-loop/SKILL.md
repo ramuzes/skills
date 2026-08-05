@@ -1,38 +1,46 @@
 ---
 name: dev-loop
-description: The canonical develop→ship loop for this workspace. Use at the start of any non-trivial feature, refactor, or fix to pick the right skill at each phase and keep planning artifacts from accumulating.
+description: The canonical develop→ship loop for this workspace. Use at the start of any non-trivial feature, refactor, or fix to pick the right skill at each phase and keep design docs in their place.
 ---
 
 # Dev loop
 
-One system of record; everything else is scratch that condenses. This skill routes you to the right sibling skill at each phase so you never wonder "which skill?".
+This skill routes you to the right sibling skill at each phase so you never wonder "which skill?". All design docs live under `docs/` by type; `CONTEXT.md` lives at the repo root.
 
-## System of record (what persists)
+## System of record
 
-| Artifact | Home | Lifecycle |
-|---|---|---|
-| Planned / done work | GitLab issues + milestones | closes → auto-archived |
-| Decisions worth remembering | `docs/adr/` | persists, curated |
-| Domain language | `CONTEXT.md` | persists, curated via `domain-modeling` |
-| Living PRD (rare) | `docs/prd/` | persists only if referenced long-term |
-| Step-by-step plan | **inside the worktree/branch** | **deleted on merge**, distilled to an ADR |
+| Doc | Location | Producer | Lifecycle |
+|---|---|---|---|
+| Glossary | `CONTEXT.md` (root) | `domain-modeling` | persistent, curated |
+| Decisions / guidelines | `docs/adr/` | `domain-modeling` | persistent, curated |
+| **SPEC** — why+what (the requirement) + how (the design) | `docs/spec/<feature>.md` | `to-spec` | persistent |
+| **PLAN** — implementation plan | `docs/plan/YYYY-MM-DD-<feature>.md` | `writing-plans` | persistent (committed) |
+| sdd workspace (ledger, briefs, review packages) | `.scratch/sdd/<plan>/` | `subagent-driven-development` | scratch — gitignored, deleted on merge |
 
-**Bloat rule:** a plan doc is scratch tied to a branch. On merge — delete it, promote any non-obvious decision to a 5-line ADR, close the milestone. Only ADRs + `CONTEXT.md` accumulate, slowly.
+**No PRD doc** — requirements live inside each SPEC. **No issue tracker yet** — `to-tickets` is deferred; specs and plans are files, not issues.
+
+**On merge:** delete the `.scratch/sdd/` workspace (git history is the record now); promote any non-obvious decision to a 5-line ADR; update `CONTEXT.md` if new terms crystallized. The SPEC and PLAN stay — they're the durable design record.
+
+## Session rules
+
+- **Start every design/implementation session on a new branch.** All work for the feature stays on that one branch.
+- **Worktree is opt-in** — only when you explicitly ask for one. Location: `.worktrees/` (gitignored). The default is a plain branch.
+- **Code-review after every task**, whether or not you're using `subagent-driven-development`.
+- **Final review checks spec compliance** — was the SPEC/PLAN implemented correctly? — not code style.
 
 ## Phase → skill
 
-| Phase | Normal feature | Big refactor |
-|---|---|---|
-| Explore | `research` → `grill-with-docs` | same |
-| Spec | `to-spec` → GitLab issue (+ `docs/prd/X.md` only if substantial) | + `writing-plans` for the step plan (scratch, in worktree) |
-| Break down | `to-tickets` → issues under a milestone | issues + plan linked from milestone |
-| Isolate | a branch is enough | `using-git-worktrees` |
-| Execute | `implement` | `subagent-driven-development` |
-| Build quality | `test-driven-development` | same |
-| Verify | `verification-before-completion` | same |
-| Review | the repo's `/code-review` | same |
-| Finish | merge → close milestone | `finishing-a-development-branch` → delete scratch, write ADR, update `CONTEXT.md` |
-| Many threads | `wayfinder` | same |
+| Phase | Skill |
+|---|---|
+| Explore | `research` → `grill-with-docs` |
+| Spec | `to-spec` → writes `docs/spec/<feature>.md` |
+| Plan | `writing-plans` → writes `docs/plan/YYYY-MM-DD-<feature>.md` |
+| Isolate | a new branch (worktree only on request) |
+| Execute | `implement`, or `subagent-driven-development` for multi-task refactors |
+| Build quality | `test-driven-development` |
+| Verify | `verification-before-completion` |
+| Review | code-review after each task; final review = spec compliance |
+| Finish | `finishing-a-development-branch` → delete `.scratch/sdd/`, write any ADR, update `CONTEXT.md` |
 
 ## When skills overlap, pick one
 

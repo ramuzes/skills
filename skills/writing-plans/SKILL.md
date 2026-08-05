@@ -3,6 +3,8 @@ name: writing-plans
 description: Use when you have a spec or requirements for a multi-step task, before touching code
 ---
 
+<!-- sourced from superpowers (github.com/obra/superpowers); re-sync if an upstream update suits -->
+
 # Writing Plans
 
 ## Overview
@@ -15,7 +17,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** If working in an isolated worktree, it should have been created via the `using-git-worktrees` skill at execution time.
 
-**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `docs/plan/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
 
 ## Scope Check
@@ -151,7 +153,7 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, offer execution:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. I'll execute it with subagent-driven-development — a fresh subagent per task, with review between tasks. Proceed?"**
+**"Plan complete and saved to `docs/plan/<filename>.md`. I'll execute it with subagent-driven-development — a fresh subagent per task, with review between tasks. Proceed?"**
 
 **REQUIRED SUB-SKILL:** Use subagent-driven-development
 - Fresh subagent per task + two-stage review
