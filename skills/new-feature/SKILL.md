@@ -1,9 +1,9 @@
 ---
-name: dev-loop
+name: new-feature
 description: The canonical develop→ship loop for this workspace. Use at the start of any non-trivial feature, refactor, or fix to pick the right skill at each phase and keep design docs in their place.
 ---
 
-# Dev loop
+# New feature
 
 This skill routes you to the right sibling skill at each phase so you never wonder "which skill?". All design docs live under `docs/` by type; `CONTEXT.md` lives at the repo root.
 
