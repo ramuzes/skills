@@ -1,0 +1,5 @@
+interface:
+  display_name: "Chat To Spec"
+  short_description: "Collect requirements from a topic into a spec"
+policy:
+  allow_implicit_invocation: false

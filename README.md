@@ -8,7 +8,7 @@ Personal, curated Claude Code skills for work on the Perseo quant stack. Drawn f
 - `test-driven-development`, `systematic-debugging`, `writing-plans`, `subagent-driven-development`, `using-git-worktrees`, `verification-before-completion`, `finishing-a-development-branch`
 
 **From mattpocock-skills** (framing + tracking)
-- `research`, `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, `domain-modeling`, `wayfinder`
+- `research`, `grill-with-docs`, `chat-to-spec`, `to-tickets`, `implement`, `domain-modeling`, `wayfinder`
 
 ## Install
 
@@ -39,9 +39,14 @@ Install at **user scope** so it follows you across repos. Then uninstall the ups
 /plugin uninstall mattpocock-skills
 ```
 
-## The loop, one line
+## The loop, two paths
 
-`research → grill-with-docs → to-spec → to-tickets → using-git-worktrees + subagent-driven-development (TDD inside) → verification-before-completion → /code-review → finishing-a-development-branch → (delete plan scratch, write ADR, close milestone)`.
+`new-feature` decides which path:
+
+- **Bounded** (well-scoped): short design → approval → `implement` + `test-driven-development` → `verification-before-completion` → `/code-review` → `finishing-a-development-branch`.
+- **Architectural** (new flow / interfaces): `domain-modeling` → `write-specs` (spec at `docs/specs/YYYY-MM-DD-<feature>-design.md`) → `writing-plans` → `subagent-driven-development` (TDD inside) → `verification-before-completion` → `/code-review` → `finishing-a-development-branch` (delete scratch, write ADR, update `CONTEXT.md`).
+
+Standalone spec from a loose topic: `/chat-to-spec` → `write-specs`.
 
 See `skills/new-feature/SKILL.md`.
 

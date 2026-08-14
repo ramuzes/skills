@@ -1,0 +1,3 @@
+interface:
+  display_name: "Write Specs"
+  short_description: "Write a spec from gathered requirements"
