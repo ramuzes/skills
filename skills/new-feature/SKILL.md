@@ -13,7 +13,23 @@ Do NOT write code, scaffold, or take any implementation action until you have pr
 
 ## Step 0 — Explore project context
 
-Always first, for either path: check files, docs, recent commits. Read `CONTEXT.md` for the current vocabulary and skim the ADRs in the area you'll touch. You design inside the model that already exists.
+Always first, for either path. Keep your context lean: read the small curated docs yourself, delegate the bulk code reading to explore subagents.
+
+**Read directly:** `CONTEXT.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it.
+
+**Formulate questions before dispatching.** List the specific things this feature needs to know about the codebase — the answers your design and clarifying questions depend on. Typically:
+
+- Which modules own the behavior being changed, and who calls them?
+- What's the nearest prior art — an existing pattern for work like this?
+- Where are the test seams today, and which are extendable?
+- What changed recently in this area (commits, in-flight work)?
+- Is there a half-built or abandoned version of this already in the tree?
+
+"Explore the project" is not a prompt — it produces a vague report. Questions first, dispatch second.
+
+**Dispatch explore subagents with those questions.** They're read-only and independent of each other — run them in parallel, one question-cluster per agent. Ask each for conclusions with `file:line` pointers, not file dumps. Scale it: Bounded work usually needs one agent (or none, if you already know the answers); Architectural work justifies one per subsystem involved.
+
+The findings feed Step 1 and the clarifying questions — they tell you what to ask.
 
 ## Step 1 — Decide the path
 
