@@ -39,10 +39,16 @@ This structure informs the task decomposition. Each task should produce self-con
 
 A task is the smallest unit that carries its own test cycle and is worth a
 fresh reviewer's gate. When drawing task boundaries: fold setup,
-configuration, scaffolding, and documentation steps into the task whose
-deliverable needs them; split only where a reviewer could meaningfully
-reject one task while approving its neighbor. Each task ends with an
-independently testable deliverable.
+configuration, scaffolding, documentation, and downstream-only definitions
+(types, schemas, constants whose sole consumer is a later task in this plan)
+into the task whose deliverable needs them; split only where a reviewer
+could meaningfully reject one task while approving its neighbor —
+"meaningfully" means the diff carries integration risk, semantic edge
+cases, or a cross-file contract, not merely that it is separable. When the
+plan already contains a deliverable's complete code, implementing it is
+transcription: prefer merging adjacent transcription-grade deliverables that
+share a seam or package into one task rather than granting each its own
+reviewer gate. Each task ends with an independently testable deliverable.
 
 ## Bite-Sized Task Granularity
 
@@ -146,6 +152,8 @@ After writing the complete plan, look at the spec with fresh eyes and check the 
 **2. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
 
 **3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
+
+**4. Granularity check:** For each task, name what could fail its review beyond a transcription error. Any task without an answer (a pure type definition, a schema, a constant whose consumer is a later task) should become a step inside its consumer's task — merge it before saving.
 
 If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
 
