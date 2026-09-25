@@ -33,6 +33,8 @@ The findings feed Step 1 and the clarifying questions — they tell you what to 
 
 ## Step 1 — Decide the path
 
+**First, judge the request's clarity.** If the user arrived with an unsure or unclear statement — a vague idea, a fuzzy goal, undecided scope, or decisions visibly still open — do not guess the missing intent into a design. Invoke the `grilling` skill and grill the user, round by round, until the plan and its decisions are settled; when the answers start minting new domain terms or hard-to-reverse decisions, bring `domain-modeling` in alongside. Those answers decide the path. A request already clear enough to route needs no grilling — the lighter one-at-a-time questions in the paths below cover it.
+
 Pick **Architectural** if ANY are true:
 
 - It adds new flow — a new feature or subsystem, not just extending an existing one
@@ -46,7 +48,7 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 ## Path A — Bounded (well-scoped)
 
-1. **Ask clarifying questions** — one at a time, only the ones that matter. Don't interview for the sake of it.
+1. **Ask clarifying questions** — one at a time, only the ones that matter. Don't interview for the sake of it. If grilling already ran in Step 1, its answers stand in for these — ask only what is still open.
 2. **Present a short design in chat** — approach, files touched, how it'll be tested. A few sentences each, scaled to complexity. For UI, a text description is enough (e.g. "a tab bar with two tabs: Positions and Orders") — no mockups, no visual companion.
 3. **GATE — get approval.** STOP and wait for an explicit yes. Do not start implementing in the same message.
 4. **Implement** — proceed with the normal development workflow. No plan document, no spec file.
@@ -56,7 +58,7 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 ## Path B — Architectural (new flow / architecture / interfaces)
 
-1. **Ask clarifying questions** — one at a time. Goal: nail down purpose, constraints, and success criteria so every decision is made now, not during implementation.
+1. **Ask clarifying questions** — one at a time. Goal: nail down purpose, constraints, and success criteria so every decision is made now, not during implementation. If grilling already ran in Step 1, its answers stand in for these — ask only what is still open.
 2. **Propose 2–3 approaches** — with trade-offs and your recommendation. Lead with the recommended one and why. YAGNI ruthlessly.
    - **GATE — get the user to pick an approach** (or confirm your recommendation) before writing anything.
 3. **Domain modeling** — invoke the `domain-modeling` skill to capture the decisions this work introduces:
@@ -92,10 +94,11 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 ## Related skills
 
+- Unclear input → `grilling` (invoked by Step 1 when the request itself is fuzzy; pairs with `domain-modeling` when decisions crystallize)
 - Bounded execute → `implement` (+ `test-driven-development`)
 - Architectural: write the spec → `write-specs`; execute → `writing-plans` → `subagent-driven-development` (+ `test-driven-development`)
 - Debug → `systematic-debugging`
-- Explore intent / read the model → `grill-with-docs` (reads CONTEXT/ADRs)
+- Explore intent / read the model → `grill-with-docs` (user-invoked wrapper: grilling + domain-modeling, with docs)
 - Standalone spec from a loose topic → `chat-to-spec` (user-invoked; collects requirements, then calls `write-specs`)
 
 If a step has no sibling skill above, do the obvious thing — don't invent ceremony.

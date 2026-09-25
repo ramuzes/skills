@@ -8,7 +8,7 @@ Personal, curated Claude Code skills for work on the Perseo quant stack. Drawn f
 - `test-driven-development`, `systematic-debugging`, `writing-plans`, `subagent-driven-development`, `using-git-worktrees`, `verification-before-completion`, `finishing-a-development-branch`
 
 **From mattpocock-skills** (framing + tracking)
-- `research`, `grill-with-docs`, `chat-to-spec`, `to-tickets`, `implement`, `domain-modeling`, `wayfinder`
+- `research`, `grilling`, `grill-with-docs`, `chat-to-spec`, `to-tickets`, `implement`, `domain-modeling`, `wayfinder`
 
 ## Install
 
@@ -43,10 +43,11 @@ Install at **user scope** so it follows you across repos. Then uninstall the ups
 
 `new-feature` decides which path:
 
+- **Unclear input** — vague idea, fuzzy goal, open decisions: `new-feature` Step 1 invokes `grilling` (with `domain-modeling` when decisions crystallize) to interview the user before routing.
 - **Bounded** (well-scoped): short design → approval → `implement` + `test-driven-development` → `verification-before-completion` → `/code-review` → `finishing-a-development-branch`.
 - **Architectural** (new flow / interfaces): `domain-modeling` → `write-specs` (spec at `docs/specs/YYYY-MM-DD-<feature>-design.md`) → `writing-plans` → `subagent-driven-development` (TDD inside) → `verification-before-completion` → `/code-review` → `finishing-a-development-branch` (delete scratch, write ADR, update `CONTEXT.md`).
 
-Standalone spec from a loose topic: `/chat-to-spec` → `write-specs`.
+Standalone spec from a loose topic: `/chat-to-spec` → `write-specs`. Standalone stress-test of a plan or decision: `/grill-with-docs` (grilling + domain-modeling with docs).
 
 See `skills/new-feature/SKILL.md`.
 
