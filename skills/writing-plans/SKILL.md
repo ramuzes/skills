@@ -74,12 +74,26 @@ reviewer gate. Each task ends with an independently testable deliverable.
 
 **Tech Stack:** [Key technologies/libraries]
 
+**Spec:** [path to the spec this plan implements — `docs/specs/YYYY-MM-DD-<feature>-design.md`. The plan argues from the spec, so the spec travels with it; executors read both]
+
 ## Global Constraints
 
 [The spec's project-wide requirements — version floors, dependency limits,
 naming and copy rules, platform requirements — one line each, with exact
 values copied verbatim from the spec. Every task's requirements implicitly
 include this section.]
+
+## Review Focus
+
+[The five input classes or failure modes the spec implies but no task's
+tests exercise that are most likely to bite a person using this software
+— one line each, naming the input or condition and the behavior a
+reasonable person would expect, most likely first. The spec is a vision
+document: it says what the software must do, not everything it will
+meet, and its silence on an input is not permission for that input to
+break the program. Write the list here, once, with the spec in front of
+you. Then, for each line, add the test that pins it to the task that
+owns the code, in that task's own step style.]
 
 ---
 ```
@@ -155,13 +169,19 @@ After writing the complete plan, look at the spec with fresh eyes and check the 
 
 **4. Granularity check:** For each task, name what could fail its review beyond a transcription error. Any task without an answer (a pure type definition, a schema, a constant whose consumer is a later task) should become a step inside its consumer's task — merge it before saving.
 
+**5. Review Focus:** For each input class or failure mode the spec implies, is there a task whose tests exercise it? The five uncovered ones most likely to bite a person go in the Review Focus section, and each line there gets its test added to the owning task. An empty section means you checked and found none, not that you skipped the check.
+
 If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
 
 ## Execution Handoff
 
-After saving the plan, offer execution:
+After saving and self-reviewing the plan, link it for your human partner
+to read and wait for their review before implementation. If they already
+explicitly supplied an execution method (e.g. the `new-feature` router
+chose subagent-driven), ask only whether the plan captures what they want,
+then use the preserved method. Otherwise ask:
 
-**"Plan complete and saved to `docs/plan/<filename>.md`. I'll execute it with subagent-driven-development — a fresh subagent per task, with review between tasks. Proceed?"**
+**"Plan complete and saved to `docs/plan/<filename>.md`. Please review the plan — does it capture what you want? I'll execute it with subagent-driven-development — a fresh subagent per task, with review between tasks. Proceed?"**
 
 **REQUIRED SUB-SKILL:** Use subagent-driven-development
 - Fresh subagent per task + two-stage review
