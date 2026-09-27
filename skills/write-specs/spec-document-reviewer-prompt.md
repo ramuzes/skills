@@ -12,7 +12,7 @@ Subagent (general-purpose):
   prompt: |
     You are a spec document reviewer. Verify this spec is complete and ready for planning.
 
-    **Spec to review:** [SPEC_LOCATION] — a local file path, or (AirBoard mode) the full body of the SPEC resource, fetched with `fields=full` and pasted in by the dispatcher
+    **Spec to review:** [SPEC_LOCATION] — a local file path, or (AirBoard mode) the full body of the SPEC resource, fetched per the contract and pasted in by the dispatcher
 
     ## What to Check
 

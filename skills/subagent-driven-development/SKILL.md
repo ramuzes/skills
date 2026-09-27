@@ -153,21 +153,23 @@ from, and conflicts inside the plan resolve against it. A plan with no
 reachable spec gets a ledger note saying so — rulings made without one are
 provisional.
 
-**AirBoard mode** is active for a repository iff its root `AGENTS.md`
-contains a section declaring AirBoard as the system of record (heading
-contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
-runs in **local mode**. In AirBoard mode the plan and spec may be service
-resources rather than files: resolve base URL / project key / token
-environment-variable name from `docs/airboard.md`, read the token from the
-repo-root `.env` (`Authorization: Bearer $<TOKEN_VAR>`), and fetch full
-bodies with `?fields=full` — resource `GET`s are slim by default. Fetch
-`GET <base>/api/agents/instructions` fresh before operating. Whenever this
-skill needs a plan *file* path (ledger identity, `scripts/task-brief`,
-`scripts/review-package`), fetch the PLAN resource body to a scratch file
-inside the plan's workspace and treat that file as PLAN_FILE. If the mode is
-declared but the service is unreachable, the token is missing, or
-`docs/airboard.md` fails to parse: report the error and stop to ask the
-user — never silently fall back to local mode.
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md`
+> contains a section declaring AirBoard as the system of record (heading
+> contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
+> runs in **local mode**. In AirBoard mode, resolve base URL / project key /
+> token env var from `docs/airboard.md` (token value in the repo-root `.env`,
+> gitignored). Before the first AirBoard operation, fetch
+> `GET <base>/api/agents/instructions?profile=discovery` and follow it as the
+> machine contract — it is the **sole source of protocol semantics**; any API
+> details cached in this skill text are non-authoritative. On unreachable
+> service / missing token / unparseable config: stop and ask — never silently
+> fall back to local mode.
+
+In AirBoard mode the plan and spec may be service resources rather than
+files. Whenever this skill needs a plan *file* path (ledger identity,
+`scripts/task-brief`, `scripts/review-package`), fetch the PLAN resource
+body — per the contract — to a scratch file inside the plan's workspace and
+treat that file as PLAN_FILE.
 
 Before dispatching Task 1, scan the plan once for conflicts, writing down
 what you checked as you check it:
@@ -518,7 +520,7 @@ You: I'm using Subagent-Driven Development to execute this plan.
 
 [Setup: feature branch verified]
 [Read plan file once: docs/plan/feature-plan.md]
-(AirBoard-mode equivalent: plan arrives as PLAN-7 — fetch GET <base>/api/projects/<project_key>/resources/PLAN-7?fields=full to a scratch file in the plan workspace, and use that path as the plan file)
+(AirBoard-mode equivalent: plan arrives as `PLAN-7` — fetch it per the contract (`profile=discovery`) to a scratch file in the plan workspace, and use that path as the plan file)
 [Resolve workspace: scripts/sdd-workspace docs/plan/feature-plan.md — no ledger inside, fresh start]
 [Create todos for all tasks]
 

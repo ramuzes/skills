@@ -22,7 +22,19 @@ The map is a single issue on this repo's issue tracker, labelled `wayfinder:map`
 
 The map is an **index**, not a store. It lists the decisions made and points at the tickets that hold their detail; a decision lives in exactly one place — its ticket — so the map never restates it, only gists it and links.
 
-**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — ask your human partner for the tracker doc if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker — unless the repo is in AirBoard mode (root `AGENTS.md` declares AirBoard as the system of record and `docs/airboard.md` exists), in which case AirBoard ISSUE resources serve as the tracker: map and tickets are ISSUE resources, and blocking is declared in the body (`Blocked by: ISSUE-N`) since AirBoard has no native blocking link. A configured tracker doc, where one exists, still wins.
+**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — ask your human partner for the tracker doc if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker — unless the repo is in AirBoard mode, in which case AirBoard ISSUE resources serve as the tracker: map and tickets are ISSUE resources, and blocking is declared in the body (`Blocked by: ISSUE-N`) since AirBoard has no native blocking link. A configured tracker doc, where one exists, still wins.
+
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md`
+> contains a section declaring AirBoard as the system of record (heading
+> contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
+> runs in **local mode**. In AirBoard mode, resolve base URL / project key /
+> token env var from `docs/airboard.md` (token value in the repo-root `.env`,
+> gitignored). Before the first AirBoard operation, fetch
+> `GET <base>/api/agents/instructions?profile=discovery` and follow it as the
+> machine contract — it is the **sole source of protocol semantics**; any API
+> details cached in this skill text are non-authoritative. On unreachable
+> service / missing token / unparseable config: stop and ask — never silently
+> fall back to local mode.
 
 ### The map body
 

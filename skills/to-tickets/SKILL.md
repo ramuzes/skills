@@ -59,8 +59,20 @@ Iterate until the user approves the breakdown.
 
 Publish the approved tickets. **How** depends on the tracker your human partner configured — the tickets are the same in every case, only the shape of the blocking edges changes:
 
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md`
+> contains a section declaring AirBoard as the system of record (heading
+> contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
+> runs in **local mode**. In AirBoard mode, resolve base URL / project key /
+> token env var from `docs/airboard.md` (token value in the repo-root `.env`,
+> gitignored). Before the first AirBoard operation, fetch
+> `GET <base>/api/agents/instructions?profile=authoring` and follow it as the
+> machine contract — it is the **sole source of protocol semantics**; any API
+> details cached in this skill text are non-authoritative. On unreachable
+> service / missing token / unparseable config: stop and ask — never silently
+> fall back to local mode.
+
 - **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below — one ticket per file, never a single combined file.
-- **AirBoard** (the repo is in AirBoard mode — root `AGENTS.md` declares AirBoard as system of record and `docs/airboard.md` exists — and no other tracker is configured) → publish one ISSUE resource per ticket (`POST kind=ISSUE`, resolving base URL / project key / token env var from `docs/airboard.md`; fetch `GET /api/agents/instructions` fresh first) in dependency order — blockers first, so later tickets can reference the real IDs of the tickets that gate them. AirBoard has no native blocking link: declare it in the body, `Blocked by: ISSUE-N` — the same body-convention shape as the local-files mode. Use the `<issue-template>` below for the body, express `ready-for-agent` as a `**Status:** ready-for-agent` line (as in the local template), and reference the source resource ID (e.g. `PLAN-7`) in the `## Parent` section.
+- **AirBoard** (the repo is in AirBoard mode and no other tracker is configured) → publish one ISSUE resource per ticket (`POST`) in dependency order — blockers first, so later tickets can reference the real IDs of the tickets that gate them. AirBoard has no native blocking link: declare it in the body, `Blocked by: ISSUE-N` — the same body-convention shape as the local-files mode. Use the `<issue-template>` below for the body, express `ready-for-agent` as a `**Status:** ready-for-agent` line (as in the local template), and reference the source resource ID (e.g. `PLAN-7`) in the `## Parent` section.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking / sub-issue relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. Apply the `ready-for-agent` triage label unless instructed otherwise — the tickets are agent-grabbable by construction.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.

@@ -2,9 +2,19 @@
 
 Where an ADR lives depends on the repo's knowledge mode:
 
-> **AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode** — the current file-based behavior, unchanged. In AirBoard mode, resolve **base URL**, **project key**, and **token environment-variable name** from `docs/airboard.md` — never hardcode them; everyone working on this repo reads that same config, especially the AirBoard URL. Read the token value from the repo-root `.env` and send `Authorization: Bearer $<TOKEN_VAR>`. Fetch `GET <base>/api/agents/instructions` fresh before any AirBoard operation and follow it as the machine contract. If the mode is declared but the service is unreachable, the token is missing, or `docs/airboard.md` fails to parse: report the error and stop to ask the user — never silently fall back to local mode.
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md`
+> contains a section declaring AirBoard as the system of record (heading
+> contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
+> runs in **local mode**. In AirBoard mode, resolve base URL / project key /
+> token env var from `docs/airboard.md` (token value in the repo-root `.env`,
+> gitignored). Before the first AirBoard operation, fetch
+> `GET <base>/api/agents/instructions?profile=authoring` and follow it as the
+> machine contract — it is the **sole source of protocol semantics**; any API
+> details cached in this skill text are non-authoritative. On unreachable
+> service / missing token / unparseable config: stop and ask — never silently
+> fall back to local mode.
 
-- **AirBoard mode:** an ADR is a service-side resource. `POST` it and **the server assigns the ID** (`ADR-N`, monotonic per project+kind). The title is passed separately on the resource; the body carries the decision.
+- **AirBoard mode:** an ADR is a service-side resource. `POST` it and **the server assigns the ID** (`ADR-N`). The title is passed separately on the resource; the body carries the decision.
 - **Local mode:** ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc. Create the `docs/adr/` directory lazily — only when the first ADR is needed.
 
 ## Template

@@ -18,7 +18,7 @@ User-invoked utility for AirBoard mode — never auto-invoked. AirBoard is the r
 
 Both halves are required on purpose: the `AGENTS.md` section is the declaration humans and agents read; `docs/airboard.md` is the machine-readable config the skills parse. Once a repo chooses AirBoard, **everyone working on it reads the same config** — especially the AirBoard URL — so no session ever guesses or hardcodes it.
 
-In AirBoard mode, the three config values are: **base URL**, **project key**, and **token environment-variable name** (token value lives in the repo-root `.env`, sent as `Authorization: Bearer $<TOKEN_VAR>`; `.env` must be gitignored). Before any AirBoard operation, fetch `GET <base>/api/agents/instructions` fresh — it is the service's self-documenting machine contract. Resource `GET`s return slim bodies; pass `?fields=full` to read one.
+In AirBoard mode, the three config values are: **base URL**, **project key**, and **token environment-variable name** (token value lives in the repo-root `.env`, sent as `Authorization: Bearer $<TOKEN_VAR>`; `.env` must be gitignored). Before the first AirBoard operation, fetch `GET <base>/api/agents/instructions?profile=<profile>` and follow it as the machine contract — it is the **sole source of protocol semantics** (`profile=ops` for status checks; `profile=discovery` / `profile=authoring` when demonstrating operations). Any endpoint behavior asserted from memory is non-authoritative.
 
 ## Mode 1 — Status check (default)
 
@@ -27,8 +27,8 @@ Run these checks in order and report the results as a table with a verdict. Do n
 1. **Declaration** — does the root `AGENTS.md` contain a section whose heading contains "AirBoard" declaring it the system of record for ADR / PRD / SPEC / PLAN / ISSUE?
 2. **Config file** — does `docs/airboard.md` exist and parse all three elements (base URL, project key, token environment-variable name)?
 3. **Token** — does the repo-root `.env` define that variable? Is `.env` gitignored (a token must never be committed)?
-4. **Service** — with the token, does `GET <base>/api/agents/instructions` respond? Follow that document as the contract.
-5. **Project** — does the project key resolve (e.g. a trivial search or resources list against it)?
+4. **Service** — with the token, does `GET <base>/api/agents/instructions?profile=ops` respond? Follow it as the contract — the sole source of protocol semantics.
+5. **Project** — does the project key resolve, per the contract's operations?
 
 Verdicts:
 
@@ -59,7 +59,7 @@ Then write, in this order:
 1. **`docs/airboard.md`** — the shared machine config (template below).
 2. **Root `AGENTS.md`** — add the declaration section (template below). The heading must contain "AirBoard" — the skills' probe matches on that.
 3. **Repo-root `.env`** — append `<TOKEN_VAR>=<token>`. Verify `.env` is gitignored; never commit the token.
-4. **Verify end to end** — `GET <base>/api/agents/instructions` responds; the project key resolves. Report the results.
+4. **Verify end to end** — `GET <base>/api/agents/instructions?profile=ops` responds; the project key resolves. Report the results.
 5. **Commit** `docs/airboard.md` and `AGENTS.md` (never `.env`), following the repo's commit style.
 
 ### `docs/airboard.md` template
@@ -75,8 +75,8 @@ any AirBoard operation. Do not hardcode these values anywhere else.
 - **Token environment variable:** <TOKEN_VAR> — value lives in the repo-root `.env` (gitignored), sent as `Authorization: Bearer $<TOKEN_VAR>`
 
 Fetch `GET <base>/api/agents/instructions` fresh before operating — it is the
-machine contract. Resource GETs are slim by default; pass `?fields=full` to
-read a body.
+machine contract and the sole source of protocol semantics (workflows fetch
+it with a `profile=` behavior-group parameter).
 ```
 
 ### `AGENTS.md` declaration template
@@ -101,8 +101,8 @@ are frozen historical archives — do not add to them. What stays local:
 Walk them through, in this order:
 
 1. Read `docs/airboard.md` → the three elements; read the token from the repo-root `.env`.
-2. `GET <base>/api/agents/instructions` fresh, once per session, before any operation.
-3. Reading rules: resource `GET`s are slim — `?fields=full` for bodies; search via `GET <base>/api/search?q=<terms>&kind=<KIND>&project_key=<key>`.
+2. Fetch the contract (`GET <base>/api/agents/instructions?profile=<profile>` for the workflow at hand) before the first operation.
+3. Reading and searching rules come from the contract (`profile=discovery`) — fetch it and follow it; don't rely on remembered endpoint shapes.
 4. What lives where: ADR / PRD / SPEC / PLAN / ISSUE on AirBoard; `CONTEXT.md` (glossary) and `.scratch/` workspace local.
 5. Never assign IDs yourself — `POST` and use what the server returns. (Parallel work lines numbering ADRs locally once produced duplicate IDs; server-side allocation is the fix.)
 6. On failure (service unreachable, token missing, config unparseable): stop and ask — never silently fall back to local files.

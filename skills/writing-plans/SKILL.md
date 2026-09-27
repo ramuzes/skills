@@ -17,11 +17,21 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** If working in an isolated worktree, it should have been created via the `using-git-worktrees` skill at execution time.
 
-**AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode** — the current file-based behavior, unchanged. In AirBoard mode, resolve **base URL**, **project key**, and **token environment-variable name** from `docs/airboard.md` — never hardcode them; everyone working on this repo reads that same config, especially the AirBoard URL. Read the token value from the repo-root `.env` and send `Authorization: Bearer $<TOKEN_VAR>`. Fetch `GET <base>/api/agents/instructions` fresh before any AirBoard operation and follow it as the machine contract; resource `GET`s return slim bodies, so pass `?fields=full` to read one. If the mode is declared but the service is unreachable, the token is missing, or `docs/airboard.md` fails to parse: report the error and stop to ask the user — never silently fall back to local mode.
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md`
+> contains a section declaring AirBoard as the system of record (heading
+> contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
+> runs in **local mode**. In AirBoard mode, resolve base URL / project key /
+> token env var from `docs/airboard.md` (token value in the repo-root `.env`,
+> gitignored). Before the first AirBoard operation, fetch
+> `GET <base>/api/agents/instructions?profile=authoring` and follow it as the
+> machine contract — it is the **sole source of protocol semantics**; any API
+> details cached in this skill text are non-authoritative. On unreachable
+> service / missing token / unparseable config: stop and ask — never silently
+> fall back to local mode.
 
-**Save plans to:** `docs/plan/YYYY-MM-DD-<feature-name>.md` (local mode), or as an AirBoard PLAN resource — `POST kind=PLAN`, one per feature, title `<feature> plan <YYYY-MM-DD>` with the date as the first body line; `PATCH status=done` once its implementation merges (AirBoard mode)
+**Save plans to:** `docs/plan/YYYY-MM-DD-<feature-name>.md` (local mode), or as an AirBoard PLAN resource — one per feature (`POST`), title `<feature> plan <YYYY-MM-DD>` with the date as the first body line; marked `done` once its implementation merges (AirBoard mode)
 - (User preferences for plan location override this default)
-- (AirBoard mode: when an executor needs a plan *file* path, fetch the PLAN body with `fields=full` to a scratch file and use that path)
+- (AirBoard mode: when an executor needs a plan *file* path, fetch the PLAN resource per the contract to a scratch file and use that path)
 
 ## Scope Check
 

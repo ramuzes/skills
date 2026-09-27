@@ -15,9 +15,21 @@ Do NOT write code, scaffold, or take any implementation action until you have pr
 
 Always first, for either path. Keep your context lean: read the small curated docs yourself, delegate the bulk code reading to explore subagents.
 
-**AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode** — the current file-based behavior, unchanged. In AirBoard mode, resolve **base URL**, **project key**, and **token environment-variable name** from `docs/airboard.md` — never hardcode them; everyone working on this repo reads that same config, especially the AirBoard URL. Read the token value from the repo-root `.env` and send `Authorization: Bearer $<TOKEN_VAR>`. Fetch `GET <base>/api/agents/instructions` fresh before any AirBoard operation and follow it as the machine contract; resource `GET`s return slim bodies, so pass `?fields=full` to read one. If the mode is declared but the service is unreachable, the token is missing, or `docs/airboard.md` fails to parse: report the error and stop to ask the user — never silently fall back to local mode. (To check or set up a repo's AirBoard config, the user can invoke the `airboard-onboarding` skill.)
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md`
+> contains a section declaring AirBoard as the system of record (heading
+> contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo
+> runs in **local mode**. In AirBoard mode, resolve base URL / project key /
+> token env var from `docs/airboard.md` (token value in the repo-root `.env`,
+> gitignored). Before the first AirBoard operation, fetch
+> `GET <base>/api/agents/instructions?profile=discovery` and follow it as the
+> machine contract — it is the **sole source of protocol semantics**; any API
+> details cached in this skill text are non-authoritative. On unreachable
+> service / missing token / unparseable config: stop and ask — never silently
+> fall back to local mode.
 
-**Read directly:** `CONTEXT.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it. **AirBoard mode:** find those ADRs by searching the service for the area's domain keywords (`kind=ADR`, `fields=full` to read the bodies). **Local mode:** read the local files in `docs/adr/`.
+(To check or set up a repo's AirBoard config, the user can invoke the `airboard-onboarding` skill.)
+
+**Read directly:** `CONTEXT.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it. **AirBoard mode:** search the service for the area's ADRs, per the contract. **Local mode:** read the local files in `docs/adr/`.
 
 **Formulate questions before dispatching.** List the specific things this feature needs to know about the codebase — the answers your design and clarifying questions depend on. Typically:
 
