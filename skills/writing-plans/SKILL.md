@@ -17,8 +17,11 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** If working in an isolated worktree, it should have been created via the `using-git-worktrees` skill at execution time.
 
-**Save plans to:** `docs/plan/YYYY-MM-DD-<feature-name>.md`
+**AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode** — the current file-based behavior, unchanged. In AirBoard mode, resolve **base URL**, **project key**, and **token environment-variable name** from `docs/airboard.md` — never hardcode them; everyone working on this repo reads that same config, especially the AirBoard URL. Read the token value from the repo-root `.env` and send `Authorization: Bearer $<TOKEN_VAR>`. Fetch `GET <base>/api/agents/instructions` fresh before any AirBoard operation and follow it as the machine contract; resource `GET`s return slim bodies, so pass `?fields=full` to read one. If the mode is declared but the service is unreachable, the token is missing, or `docs/airboard.md` fails to parse: report the error and stop to ask the user — never silently fall back to local mode.
+
+**Save plans to:** `docs/plan/YYYY-MM-DD-<feature-name>.md` (local mode), or as an AirBoard PLAN resource — `POST kind=PLAN`, one per feature, title `<feature> plan <YYYY-MM-DD>` with the date as the first body line; `PATCH status=done` once its implementation merges (AirBoard mode)
 - (User preferences for plan location override this default)
+- (AirBoard mode: when an executor needs a plan *file* path, fetch the PLAN body with `fields=full` to a scratch file and use that path)
 
 ## Scope Check
 
@@ -74,7 +77,7 @@ reviewer gate. Each task ends with an independently testable deliverable.
 
 **Tech Stack:** [Key technologies/libraries]
 
-**Spec:** [path to the spec this plan implements — `docs/specs/YYYY-MM-DD-<feature>-design.md`. The plan argues from the spec, so the spec travels with it; executors read both]
+**Spec:** [the spec this plan implements — a local path like `docs/specs/YYYY-MM-DD-<feature>-design.md`, or an AirBoard resource ID like `SPEC-7`. The plan argues from the spec, so the spec travels with it; executors read both]
 
 ## Global Constraints
 
@@ -181,7 +184,7 @@ explicitly supplied an execution method (e.g. the `new-feature` router
 chose subagent-driven), ask only whether the plan captures what they want,
 then use the preserved method. Otherwise ask:
 
-**"Plan complete and saved to `docs/plan/<filename>.md`. Please review the plan — does it capture what you want? I'll execute it with subagent-driven-development — a fresh subagent per task, with review between tasks. Proceed?"**
+**"Plan complete — saved to `docs/plan/<filename>.md` (local mode) / created as `PLAN-N` on AirBoard (AirBoard mode). Please review the plan — does it capture what you want? I'll execute it with subagent-driven-development — a fresh subagent per task, with review between tasks. Proceed?"**
 
 **REQUIRED SUB-SKILL:** Use subagent-driven-development
 - Fresh subagent per task + two-stage review

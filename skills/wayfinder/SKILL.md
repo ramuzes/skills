@@ -22,7 +22,7 @@ The map is a single issue on this repo's issue tracker, labelled `wayfinder:map`
 
 The map is an **index**, not a store. It lists the decisions made and points at the tickets that hold their detail; a decision lives in exactly one place — its ticket — so the map never restates it, only gists it and links.
 
-**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — ask your human partner for the tracker doc if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker.
+**Where the map, its child tickets, blocking, and frontier queries physically live is tracker-specific.** The issue tracker should have been provided to you — ask your human partner for the tracker doc if not. Consult the tracker doc's "Wayfinding operations" section for how _this_ repo expresses them. If no tracker has been provided, default to the local-markdown tracker — unless the repo is in AirBoard mode (root `AGENTS.md` declares AirBoard as the system of record and `docs/airboard.md` exists), in which case AirBoard ISSUE resources serve as the tracker: map and tickets are ISSUE resources, and blocking is declared in the body (`Blocked by: ISSUE-N`) since AirBoard has no native blocking link. A configured tracker doc, where one exists, still wins.
 
 ### The map body
 

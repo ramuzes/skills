@@ -1,6 +1,6 @@
 ---
 name: new-feature
-description: The canonical develop→ship entry point. Decides whether a task is Bounded (well-scoped — short design, approval, implement) or Architectural (new flow, architecture, or interfaces — explore, approaches, domain-modeling, write-specs, then writing-plans). Use at the start of any non-trivial feature, refactor, or fix.
+description: The canonical develop→ship entry point. Decides whether a task is Bounded (well-scoped — short design, approval, implement) or Architectural (new flow, architecture, or interfaces — explore, approaches, domain-modeling, write-specs, then writing-plans). Use at the start of any non-trivial feature, refactor, or fix. Dual-mode knowledge store: local files (docs/adr/, docs/specs/, docs/plan/) or AirBoard resources (ADR/PRD/SPEC/PLAN/ISSUE) when the repo declares AirBoard mode.
 ---
 
 # New feature
@@ -15,7 +15,9 @@ Do NOT write code, scaffold, or take any implementation action until you have pr
 
 Always first, for either path. Keep your context lean: read the small curated docs yourself, delegate the bulk code reading to explore subagents.
 
-**Read directly:** `CONTEXT.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it.
+**AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode** — the current file-based behavior, unchanged. In AirBoard mode, resolve **base URL**, **project key**, and **token environment-variable name** from `docs/airboard.md` — never hardcode them; everyone working on this repo reads that same config, especially the AirBoard URL. Read the token value from the repo-root `.env` and send `Authorization: Bearer $<TOKEN_VAR>`. Fetch `GET <base>/api/agents/instructions` fresh before any AirBoard operation and follow it as the machine contract; resource `GET`s return slim bodies, so pass `?fields=full` to read one. If the mode is declared but the service is unreachable, the token is missing, or `docs/airboard.md` fails to parse: report the error and stop to ask the user — never silently fall back to local mode. (To check or set up a repo's AirBoard config, the user can invoke the `airboard-onboarding` skill.)
+
+**Read directly:** `CONTEXT.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it. **AirBoard mode:** find those ADRs by searching the service for the area's domain keywords (`kind=ADR`, `fields=full` to read the bodies). **Local mode:** read the local files in `docs/adr/`.
 
 **Formulate questions before dispatching.** List the specific things this feature needs to know about the codebase — the answers your design and clarifying questions depend on. Typically:
 
@@ -63,9 +65,9 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
    - **GATE — get the user to pick an approach** (or confirm your recommendation) before writing anything.
 3. **Domain modeling** — invoke the `domain-modeling` skill to capture the decisions this work introduces:
    - Add or sharpen terms in `CONTEXT.md` as they crystallise.
-   - Record hard-to-reverse, surprising, real-trade-off decisions as ADRs under `docs/adr/`.
+   - Record hard-to-reverse, surprising, real-trade-off decisions as ADRs — per `domain-modeling`'s current mode: AirBoard ADR resources in AirBoard mode, files under `docs/adr/` in local mode.
    - Architectural work almost always moves the domain model — if nothing here changed, reconsider whether this is really Architectural.
-4. **Write the spec** — invoke `write-specs`, passing the gathered requirements. `write-specs` writes the design doc to `docs/specs/YYYY-MM-DD-<feature>-design.md`, self-reviews it, and asks the user to review.
+4. **Write the spec** — invoke `write-specs`, passing the gathered requirements. `write-specs` writes the design doc to `docs/specs/YYYY-MM-DD-<feature>-design.md` (local mode) or as an AirBoard SPEC resource (AirBoard mode), self-reviews it, and asks the user to review.
 5. **GATE — user reviews the written spec** (run by `write-specs`). Wait for approval before planning. If the user requests changes, `write-specs` revises and re-reviews.
 6. **Transition to implementation** — invoke the `writing-plans` skill to turn the spec into an implementation plan. writing-plans is the only skill you invoke after the spec; it then hands off to `subagent-driven-development` (TDD inside).
 
@@ -75,15 +77,16 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 | Doc | Location | Producer | Lifecycle |
 |---|---|---|---|
-| Glossary | `CONTEXT.md` (root) | `domain-modeling` | persistent, curated |
-| Decisions / guidelines | `docs/adr/` | `domain-modeling` | persistent, curated |
-| **SPEC** — why+what (requirement) + how (design) | `docs/specs/YYYY-MM-DD-<feature>-design.md` | `write-specs` (called by `new-feature` Path B · `chat-to-spec`) | persistent |
-| **PLAN** — implementation plan | `docs/plan/YYYY-MM-DD-<feature>.md` | `writing-plans` | persistent (committed) |
-| sdd workspace (ledger, briefs, review packages) | `.scratch/sdd/<plan>/` | `subagent-driven-development` | scratch — gitignored, deleted on merge |
+| Glossary | `CONTEXT.md` (root) — both modes | `domain-modeling` | persistent, curated |
+| Decisions / guidelines | **AirBoard mode:** ADR resources · **local mode:** `docs/adr/` | `domain-modeling` | persistent, curated |
+| **PRD** — external requirements | **AirBoard mode only:** PRD resources (entered by stakeholders via the AirBoard web UI; SPECs cite them as `Ref: PRD-N`) | stakeholders | persistent |
+| **SPEC** — why+what (requirement) + how (design) | **AirBoard mode:** SPEC resource (living — revised via `PATCH`) · **local mode:** `docs/specs/YYYY-MM-DD-<feature>-design.md` | `write-specs` (called by `new-feature` Path B · `chat-to-spec`) | persistent |
+| **PLAN** — implementation plan | **AirBoard mode:** PLAN resource · **local mode:** `docs/plan/YYYY-MM-DD-<feature>.md` | `writing-plans` | persistent (committed; AirBoard mode: `done` once merged) |
+| sdd workspace (ledger, briefs, review packages) | `.scratch/sdd/<plan>/` — both modes | `subagent-driven-development` | scratch — gitignored, deleted on merge |
 
-**No PRD doc** — requirements live inside each SPEC. **No issue tracker yet** — `to-tickets` is deferred; specs and plans are files, not issues.
+**Local mode has no PRD doc** — requirements live inside each SPEC; **in AirBoard mode a PRD is an AirBoard resource** — the external requirements entry point for people who never touch the repo, consumed by SPECs. **Local mode has no issue tracker yet** — `to-tickets` is deferred, and specs and plans are files, not issues; **in AirBoard mode, AirBoard ISSUE resources are the tracker** — `to-tickets` can publish to them.
 
-**On merge:** delete the `.scratch/sdd/` workspace (git history is the record now); promote any non-obvious decision to a short ADR; update `CONTEXT.md` if new terms crystallised. The SPEC and PLAN stay.
+**On merge:** delete the `.scratch/sdd/` workspace (git history is the record now); promote any non-obvious decision to a short ADR (AirBoard ADR resource or `docs/adr/` file, per mode); update `CONTEXT.md` if new terms crystallised. **Local mode:** the SPEC and PLAN files stay. **AirBoard mode:** `PATCH` the PLAN to `status: done`; the SPEC stays `active` as a living document — later changes go through SPEC revisions, not new specs.
 
 ## Session rules
 
@@ -96,9 +99,10 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 - Unclear input → `grilling` (invoked by Step 1 when the request itself is fuzzy; pairs with `domain-modeling` when decisions crystallize)
 - Bounded execute → `implement` (+ `test-driven-development`)
-- Architectural: write the spec → `write-specs`; execute → `writing-plans` → `subagent-driven-development` (+ `test-driven-development`)
+- Architectural: write the spec → `write-specs` (SPEC as an AirBoard resource or a `docs/specs/` file, per mode); execute → `writing-plans` → `subagent-driven-development` (+ `test-driven-development`)
 - Debug → `systematic-debugging`
 - Explore intent / read the model → `grill-with-docs` (user-invoked wrapper: grilling + domain-modeling, with docs)
 - Standalone spec from a loose topic → `chat-to-spec` (user-invoked; collects requirements, then calls `write-specs`)
+- AirBoard config check / repo onboarding → `airboard-onboarding` (user-invoked; sets up or diagnoses a repo's AirBoard mode)
 
 If a step has no sibling skill above, do the obvious thing — don't invent ceremony.

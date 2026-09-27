@@ -1,8 +1,20 @@
 # Spec template
 
-Write the SPEC to `docs/specs/YYYY-MM-DD-<feature>-design.md` using this structure. `<feature>` is a short kebab-case slug. Use the project's domain glossary (`CONTEXT.md`) vocabulary throughout, and respect any ADRs in the area you're touching.
+Write the SPEC using this structure — **local mode:** to `docs/specs/YYYY-MM-DD-<feature>-design.md` (`<feature>` is a short kebab-case slug); **AirBoard mode:** as the body of a SPEC resource with title `<domain> — <topic>`. Use the project's domain glossary (`CONTEXT.md`) vocabulary throughout, and respect any ADRs in the area you're touching.
 
-This document holds both the **requirement** (the why and the what — what other teams call a PRD) and the **design** (the how). Requirements live here; we do not keep a separate PRD doc.
+This document holds both the **requirement** (the why and the what — what other teams call a PRD) and the **design** (the how). **Local mode:** requirements live here; we do not keep a separate PRD doc. **AirBoard mode:** requirements may also arrive as PRD resources submitted from outside the repo — mark that origin with `Ref: PRD-N` in the body, and still state the requirement in the SPEC itself.
+
+**Revising (AirBoard mode):** SPECs are living documents — revise the existing resource (`PATCH`) instead of writing a new one, and prepend a change section at the top of the body:
+
+```md
+## Change YYYY-MM-DD — <slug>
+
+- ADDED: …
+- MODIFIED: …
+- REMOVED: …
+```
+
+The service keeps the append-only revision chain; the `## Change` sections keep the body self-describing. (Local mode has no revision convention — a spec file is simply edited under normal git review.)
 
 ---
 

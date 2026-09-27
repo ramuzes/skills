@@ -1,8 +1,11 @@
 # ADR Format
 
-ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
+Where an ADR lives depends on the repo's knowledge mode:
 
-Create the `docs/adr/` directory lazily — only when the first ADR is needed.
+> **AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode** — the current file-based behavior, unchanged. In AirBoard mode, resolve **base URL**, **project key**, and **token environment-variable name** from `docs/airboard.md` — never hardcode them; everyone working on this repo reads that same config, especially the AirBoard URL. Read the token value from the repo-root `.env` and send `Authorization: Bearer $<TOKEN_VAR>`. Fetch `GET <base>/api/agents/instructions` fresh before any AirBoard operation and follow it as the machine contract. If the mode is declared but the service is unreachable, the token is missing, or `docs/airboard.md` fails to parse: report the error and stop to ask the user — never silently fall back to local mode.
+
+- **AirBoard mode:** an ADR is a service-side resource. `POST` it and **the server assigns the ID** (`ADR-N`, monotonic per project+kind). The title is passed separately on the resource; the body carries the decision.
+- **Local mode:** ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc. Create the `docs/adr/` directory lazily — only when the first ADR is needed.
 
 ## Template
 
@@ -12,19 +15,21 @@ Create the `docs/adr/` directory lazily — only when the first ADR is needed.
 {1-3 sentences: what's the context, what did we decide, and why.}
 ```
 
-That's it. An ADR can be a single paragraph. The value is in recording *that* a decision was made and *why* — not in filling out sections.
+That's it. An ADR can be a single paragraph. The value is in recording *that* a decision was made and *why* — not in filling out sections. The body structure is identical in both modes; **AirBoard mode** passes the short title separately, so the body may drop the top-level heading and open with the 1–3 sentences.
 
 ## Optional sections
 
 Only include these when they add genuine value. Most ADRs won't need them.
 
-- **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`) — useful when decisions are revisited
+- **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`) — useful when decisions are revisited. **AirBoard mode** uses the resource's `status` field instead: `proposed` → `draft`, `accepted` → `active`; `deprecated` / `superseded` → create the replacement ADR (`POST`), `PATCH` the old one to `status: cancelled`, and cross-link both ways (new body: `Supersedes: ADR-N`; old body: `Superseded by: ADR-M`).
 - **Considered Options** — only when the rejected alternatives are worth remembering
 - **Consequences** — only when non-obvious downstream effects need to be called out
 
 ## Numbering
 
-Scan `docs/adr/` for the highest existing number and increment by one.
+**AirBoard mode:** none, ever. `POST` the resource and the server assigns `ADR-N` — never scan for a "next" number, never pre-allocate an ID for later use. Local scan-and-increment numbering collides the moment two parallel work lines do it (it has happened); server-side allocation is the fix.
+
+**Local mode:** Scan `docs/adr/` for the highest existing number and increment by one.
 
 ## When to offer an ADR
 

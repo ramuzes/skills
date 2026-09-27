@@ -1,6 +1,6 @@
 ---
 name: chat-to-spec
-description: Turn a free-form topic into a spec. User-invoked standalone on-ramp — collect requirements and info through clarifying questions, then invoke write-specs to produce the reviewed spec at docs/specs/YYYY-MM-DD-<feature>-design.md. Use even when no other skill is running.
+description: Turn a free-form topic into a spec. User-invoked standalone on-ramp — collect requirements and info through clarifying questions, then invoke write-specs to produce the reviewed spec at docs/specs/YYYY-MM-DD-<feature>-design.md (local mode) or as a living AirBoard SPEC resource (AirBoard mode). Use even when no other skill is running.
 disable-model-invocation: true
 ---
 
@@ -14,7 +14,7 @@ A standalone, user-invoked way to turn a loose topic into a spec. This skill **c
 
 2. **Collect requirements through clarifying questions** — one at a time. Pin down the problem, the goal, scope, and success criteria. If the conversation already contains enough, synthesize instead of re-asking. Sketch the test seams you expect to use and check they match the user's expectations.
 
-3. **Invoke `write-specs`**, passing the gathered requirements (and the relevant chat history) as context. `write-specs` writes the spec to `docs/specs/YYYY-MM-DD-<feature>-design.md`, self-reviews it, and asks the user to review.
+3. **Invoke `write-specs`**, passing the gathered requirements (and the relevant chat history) as context. `write-specs` writes the spec — to `docs/specs/YYYY-MM-DD-<feature>-design.md` (local mode) or as an AirBoard SPEC resource (AirBoard mode) — self-reviews it, and asks the user to review.
 
 ## After the spec
 

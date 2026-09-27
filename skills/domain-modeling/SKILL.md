@@ -7,6 +7,8 @@ description: Build and sharpen a project's domain model. Use when the user wants
 
 Actively build and sharpen the project's domain model as you design. This is the *active* discipline — challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* `CONTEXT.md` for vocabulary is not this skill — that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
 
+**AirBoard mode** is active for a repository iff its root `AGENTS.md` contains a section declaring AirBoard as the system of record (heading contains "AirBoard") **and** `docs/airboard.md` exists; otherwise the repo runs in **local mode**. In AirBoard mode there is no local directory structure for decisions: ADRs are created via the AirBoard API, resolving base URL / project key / token environment-variable name from `docs/airboard.md` (see [ADR-FORMAT.md](./ADR-FORMAT.md) for the mode rules, and the user-invoked `airboard-onboarding` skill to check or set up the config). The directory diagrams below depict **local mode**. `CONTEXT.md` stays local in both modes.
+
 ## File structure
 
 Most repos have a single context:

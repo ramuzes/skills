@@ -1,0 +1,5 @@
+interface:
+  display_name: "AirBoard Onboarding"
+  short_description: "Check or set up a repo's AirBoard config"
+policy:
+  allow_implicit_invocation: false

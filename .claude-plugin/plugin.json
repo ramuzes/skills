@@ -22,6 +22,7 @@
     "./skills/domain-modeling",
     "./skills/wayfinder",
     "./skills/requesting-code-review",
-    "./skills/receiving-code-review"
+    "./skills/receiving-code-review",
+    "./skills/airboard-onboarding"
   ]
 }
