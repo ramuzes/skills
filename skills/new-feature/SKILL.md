@@ -1,6 +1,6 @@
 ---
 name: new-feature
-description: The canonical develop→ship entry point. Decides whether a task is Bounded (well-scoped — short design, approval, implement) or Architectural (new flow, architecture, or interfaces — explore, approaches, domain-modeling, write-specs, then writing-plans). Use at the start of any non-trivial feature, refactor, or fix. Dual-mode knowledge store: local files (docs/adr/, docs/specs/, docs/plan/) or AirBoard resources (ADR/PRD/SPEC/PLAN/ISSUE) when the repo declares AirBoard mode.
+description: The canonical develop→ship entry point. Decides whether a task is Bounded (well-scoped — short design, approval, implement) or Architectural (new flow, architecture, or interfaces — explore, approaches, domain-modeling, write-specs, then writing-plans). Use at the start of any non-trivial feature, refactor, or fix. Dual-mode knowledge store — local files (docs/adr/, docs/specs/, docs/plan/) or AirBoard resources (ADR/PRD/SPEC/PLAN/ISSUE) when the repo declares AirBoard mode.
 ---
 
 # New feature
