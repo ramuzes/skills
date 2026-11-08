@@ -48,6 +48,8 @@ The approach, from the user's perspective.
 
 Do NOT include specific file paths or code snippets — they go stale fast.
 
+Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
+
 ### Testing decisions
 - What makes a good test here (test external behaviour, not implementation details)
 - Which modules will be tested
