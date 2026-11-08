@@ -45,7 +45,7 @@ Install at **user scope** so it follows you across repos. Then uninstall the ups
 
 - **Unclear input** — vague idea, fuzzy goal, open decisions: `new-feature` Step 1 invokes `grilling` (with `domain-modeling` when decisions crystallize) to interview the user before routing.
 - **Bounded** (well-scoped): short design → approval → `implement` + `test-driven-development` → `verification-before-completion` → `/code-review` → `finishing-a-development-branch`.
-- **Architectural** (new flow / interfaces): `domain-modeling` → `write-specs` (spec at `docs/specs/YYYY-MM-DD-<feature>-design.md`) → `writing-plans` → `subagent-driven-development` (TDD inside) → `verification-before-completion` → `/code-review` → `finishing-a-development-branch` (delete scratch, write ADR, update `CONTEXT.md`).
+- **Architectural** (new flow / interfaces): `domain-modeling` → `write-specs` (spec at `docs/specs/YYYY-MM-DD-<feature>-design.md`) → `writing-plans` → `subagent-driven-development` (TDD inside) → `verification-before-completion` → `/code-review` → `finishing-a-development-branch` (delete scratch, write ADR, update `GLOSSARY.md`).
 
 Standalone spec from a loose topic: `/chat-to-spec` → `write-specs`. Standalone stress-test of a plan or decision: `/grill-with-docs` (grilling + domain-modeling with docs).
 

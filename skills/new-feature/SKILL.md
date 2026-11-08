@@ -29,7 +29,7 @@ Always first, for either path. Keep your context lean: read the small curated do
 
 (To check or set up a repo's AirBoard config, the user can invoke the `airboard-onboarding` skill.)
 
-**Read directly:** `CONTEXT.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it. **AirBoard mode:** search the service for the area's ADRs, per the contract. **Local mode:** read the local files in `docs/adr/`.
+**Read directly:** `GLOSSARY.md` and the ADRs in the area you'll touch. You design inside the model that already exists — you need the actual glossary wording, not a summary of it. **AirBoard mode:** search the service for the area's ADRs, per the contract. **Local mode:** read the local files in `docs/adr/`.
 
 **Formulate questions before dispatching.** List the specific things this feature needs to know about the codebase — the answers your design and clarifying questions depend on. Typically:
 
@@ -76,7 +76,7 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 2. **Propose 2–3 approaches** — with trade-offs and your recommendation. Lead with the recommended one and why. YAGNI ruthlessly.
    - **GATE — get the user to pick an approach** (or confirm your recommendation) before writing anything.
 3. **Domain modeling** — invoke the `domain-modeling` skill to capture the decisions this work introduces:
-   - Add or sharpen terms in `CONTEXT.md` as they crystallise.
+   - Add or sharpen terms in `GLOSSARY.md` as they crystallise.
    - Record hard-to-reverse, surprising, real-trade-off decisions as ADRs — per `domain-modeling`'s current mode: AirBoard ADR resources in AirBoard mode, files under `docs/adr/` in local mode.
    - Architectural work almost always moves the domain model — if nothing here changed, reconsider whether this is really Architectural.
 4. **Write the spec** — invoke `write-specs`, passing the gathered requirements. `write-specs` writes the design doc to `docs/specs/YYYY-MM-DD-<feature>-design.md` (local mode) or as an AirBoard SPEC resource (AirBoard mode), self-reviews it, and asks the user to review.
@@ -89,7 +89,7 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 | Doc | Location | Producer | Lifecycle |
 |---|---|---|---|
-| Glossary | `CONTEXT.md` (root) — both modes | `domain-modeling` | persistent, curated |
+| Glossary | `GLOSSARY.md` (root) — both modes | `domain-modeling` | persistent, curated |
 | Decisions / guidelines | **AirBoard mode:** ADR resources · **local mode:** `docs/adr/` | `domain-modeling` | persistent, curated |
 | **PRD** — external requirements | **AirBoard mode only:** PRD resources (entered by stakeholders via the AirBoard web UI; SPECs cite them as `Ref: PRD-N`) | stakeholders | persistent |
 | **SPEC** — why+what (requirement) + how (design) | **AirBoard mode:** SPEC resource (living — revised via `PATCH`) · **local mode:** `docs/specs/YYYY-MM-DD-<feature>-design.md` | `write-specs` (called by `new-feature` Path B · `chat-to-spec`) | persistent |
@@ -98,7 +98,7 @@ Otherwise it's **Bounded**: a well-scoped change that fits the existing structur
 
 **Local mode has no PRD doc** — requirements live inside each SPEC; **in AirBoard mode a PRD is an AirBoard resource** — the external requirements entry point for people who never touch the repo, consumed by SPECs. **Local mode has no issue tracker yet** — `to-tickets` is deferred, and specs and plans are files, not issues; **in AirBoard mode, AirBoard ISSUE resources are the tracker** — `to-tickets` can publish to them.
 
-**On merge:** delete the `.scratch/sdd/` workspace (git history is the record now); promote any non-obvious decision to a short ADR (AirBoard ADR resource or `docs/adr/` file, per mode); update `CONTEXT.md` if new terms crystallised. **Local mode:** the SPEC and PLAN files stay. **AirBoard mode:** `PATCH` the PLAN to `status: done`; the SPEC stays `active` as a living document — later changes go through SPEC revisions, not new specs.
+**On merge:** delete the `.scratch/sdd/` workspace (git history is the record now); promote any non-obvious decision to a short ADR (AirBoard ADR resource or `docs/adr/` file, per mode); update `GLOSSARY.md` if new terms crystallised. **Local mode:** the SPEC and PLAN files stay. **AirBoard mode:** `PATCH` the PLAN to `status: done`; the SPEC stays `active` as a living document — later changes go through SPEC revisions, not new specs.
 
 ## Session rules
 

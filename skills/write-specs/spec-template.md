@@ -1,6 +1,6 @@
 # Spec template
 
-Write the SPEC using this structure — **local mode:** to `docs/specs/YYYY-MM-DD-<feature>-design.md` (`<feature>` is a short kebab-case slug); **AirBoard mode:** as the body of a SPEC resource with title `<domain> — <topic>`. Use the project's domain glossary (`CONTEXT.md`) vocabulary throughout, and respect any ADRs in the area you're touching.
+Write the SPEC using this structure — **local mode:** to `docs/specs/YYYY-MM-DD-<feature>-design.md` (`<feature>` is a short kebab-case slug); **AirBoard mode:** as the body of a SPEC resource with title `<domain> — <topic>`. Use the project's domain glossary (`GLOSSARY.md`) vocabulary throughout, and respect any ADRs in the area you're touching.
 
 This document holds both the **requirement** (the why and the what — what other teams call a PRD) and the **design** (the how). **Local mode:** requirements live here; we do not keep a separate PRD doc. **AirBoard mode:** requirements may also arrive as PRD resources submitted from outside the repo — mark that origin with `Ref: PRD-N` in the body, and still state the requirement in the SPEC itself.
 

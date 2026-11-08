@@ -10,7 +10,7 @@ A standalone, user-invoked way to turn a loose topic into a spec. This skill **c
 
 ## Process
 
-1. **Explore the repo** to understand the current state. Use the project's domain glossary (`CONTEXT.md`) vocabulary throughout, and respect any ADRs in the area you're touching.
+1. **Explore the repo** to understand the current state. Use the project's domain glossary (`GLOSSARY.md`) vocabulary throughout, and respect any ADRs in the area you're touching.
 
 2. **Collect requirements through clarifying questions** — one at a time. Pin down the problem, the goal, scope, and success criteria. If the conversation already contains enough, synthesize instead of re-asking. Sketch the test seams you expect to use and check they match the user's expectations.
 

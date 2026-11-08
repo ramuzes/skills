@@ -87,7 +87,7 @@ it with a `profile=` behavior-group parameter).
 This repo runs **AirBoard mode**: ADRs, PRDs, SPECs, PLANs, and ISSUEs live in
 AirBoard, never as new repo files. `docs/adr/`, `docs/specs/`, and `docs/plan/`
 are frozen historical archives — do not add to them. What stays local:
-`CONTEXT.md` (glossary) and the `.scratch/` workspace (gitignored).
+`GLOSSARY.md` (glossary) and the `.scratch/` workspace (gitignored).
 
 - **Config:** read base URL, project key, and token environment variable from `docs/airboard.md` — every session on this repo reads that same config.
 - **Contract:** fetch `GET /api/agents/instructions` fresh before operating.
@@ -103,7 +103,7 @@ Walk them through, in this order:
 1. Read `docs/airboard.md` → the three elements; read the token from the repo-root `.env`.
 2. Fetch the contract (`GET <base>/api/agents/instructions?profile=<profile>` for the workflow at hand) before the first operation.
 3. Reading and searching rules come from the contract (`profile=discovery`) — fetch it and follow it; don't rely on remembered endpoint shapes.
-4. What lives where: ADR / PRD / SPEC / PLAN / ISSUE on AirBoard; `CONTEXT.md` (glossary) and `.scratch/` workspace local.
+4. What lives where: ADR / PRD / SPEC / PLAN / ISSUE on AirBoard; `GLOSSARY.md` (glossary) and `.scratch/` workspace local.
 5. Never assign IDs yourself — `POST` and use what the server returns. (Parallel work lines numbering ADRs locally once produced duplicate IDs; server-side allocation is the fix.)
 6. On failure (service unreachable, token missing, config unparseable): stop and ask — never silently fall back to local files.
 

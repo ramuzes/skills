@@ -25,7 +25,7 @@ This repo has **no issue tracker** in local mode — the SPEC is a committed fil
 
 ## Process
 
-1. **Use the project's domain language.** Read `CONTEXT.md` for vocabulary and skim the ADRs in the area you're touching — **AirBoard mode:** search the service for the area's ADRs, per the contract; **local mode:** skim the local files in `docs/adr/`. Use those terms throughout. Explore the repo for current state only if the caller hasn't already supplied enough context.
+1. **Use the project's domain language.** Read `GLOSSARY.md` for vocabulary and skim the ADRs in the area you're touching — **AirBoard mode:** search the service for the area's ADRs, per the contract; **local mode:** skim the local files in `docs/adr/`. Use those terms throughout. Explore the repo for current state only if the caller hasn't already supplied enough context.
 
 2. **Write the SPEC** using the template at `spec-template.md` (sibling file). Under **Testing decisions**, sketch the test seams — prefer existing seams, use the highest seam possible, and keep the count low (the ideal is one).
    - **Local mode:** save it to `docs/specs/YYYY-MM-DD-<feature>-design.md` (`<feature>` is a short kebab-case slug). This file is the durable design record.
